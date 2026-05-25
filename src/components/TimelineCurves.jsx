@@ -30,7 +30,7 @@ function TimelineCurves({
                 data={combinedWhatIfReadmissionData}
                 margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#223046" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis dataKey="day" stroke="#9ca3af" fontSize={11} />
                 <YAxis unit="%" stroke="#9ca3af" fontSize={11} />
                 <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
@@ -56,7 +56,7 @@ function TimelineCurves({
                 data={readmissionChartData}
                 margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#223046" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis dataKey="day" stroke="#9ca3af" fontSize={11} />
                 <YAxis unit="%" stroke="#9ca3af" fontSize={11} />
                 <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
@@ -82,7 +82,7 @@ function TimelineCurves({
                 data={combinedWhatIfMortalityData}
                 margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#223046" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis dataKey="day" stroke="#9ca3af" fontSize={11} />
                 <YAxis unit="%" stroke="#9ca3af" fontSize={11} />
                 <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />

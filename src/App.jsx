@@ -17,12 +17,14 @@ import AIPrognosis from './components/AIPrognosis';
 import SandboxSimulation from './components/SandboxSimulation';
 import TimelineCurves from './components/TimelineCurves';
 import ClinicalTabs from './components/ClinicalTabs';
+import OverviewDashboard from './components/OverviewDashboard';
 
 function App() {
   const [patients, setPatients] = useState([]);
   const [loadingCsv, setLoadingCsv] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [currentView, setCurrentView] = useState('overview');
   
   const [featuresOrder, setFeaturesOrder] = useState([]);
   
@@ -36,6 +38,16 @@ function App() {
 
   const [activeTab, setActiveTab] = useState('vitals');
   const [sandboxOverrides, setSandboxOverrides] = useState({});
+
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   useEffect(() => {
     fetch(API_BASE_URL + '/')
@@ -60,7 +72,7 @@ function App() {
         setFeaturesOrder(DEFAULT_FEATURES_ORDER);
       });
 
-    Papa.parse('/dataset_test_1000.csv', {
+    Papa.parse(`${import.meta.env.BASE_URL}dataset_test_1000.csv`, {
       download: true,
       header: true,
       skipEmptyLines: true,
@@ -244,11 +256,17 @@ function App() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         backendOnline={backendOnline}
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
 
       {/* Main Panel */}
       <main className="dashboard">
-        {selectedPatient ? (
+        {currentView === 'overview' ? (
+          <OverviewDashboard patients={patients} />
+        ) : selectedPatient ? (
           <>
             {/* Header patient bar */}
             <DashboardHeader 

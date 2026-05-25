@@ -142,7 +142,7 @@ function SandboxSimulation({
                 ]}
                 margin={{ top: 20, right: 10, left: 0, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#223046" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis dataKey="name" stroke="#9ca3af" fontSize={11} />
                 <YAxis stroke="#9ca3af" unit="%" fontSize={11} />
                 <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />

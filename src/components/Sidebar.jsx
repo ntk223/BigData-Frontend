@@ -1,5 +1,15 @@
 import React from 'react';
-import { Activity, Search, AlertCircle, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { 
+  Activity, 
+  Search, 
+  AlertCircle, 
+  RefreshCw, 
+  CheckCircle2, 
+  LayoutDashboard, 
+  User,
+  Sun,
+  Moon
+} from 'lucide-react';
 
 function Sidebar({
   loadingCsv,
@@ -8,16 +18,47 @@ function Sidebar({
   setSelectedPatient,
   searchQuery,
   setSearchQuery,
-  backendOnline
+  backendOnline,
+  currentView,
+  setCurrentView,
+  theme,
+  toggleTheme
 }) {
+  const handleSelectPatient = (patient) => {
+    setSelectedPatient(patient);
+    setCurrentView('patient');
+  };
+
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <div className="brand">
-          <div className="brand-icon">
-            <Activity size={24} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <div className="brand">
+            <div className="brand-icon">
+              <Activity size={24} />
+            </div>
+            <span className="brand-name">PredictCare AI</span>
           </div>
-          <span className="brand-name">PredictCare AI</span>
+          <button 
+            onClick={toggleTheme}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              color: 'var(--text-secondary)',
+              padding: '6px',
+              borderRadius: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'var(--bg-app)',
+              border: '1px solid var(--border-color)',
+              transition: 'all 0.2s ease'
+            }}
+            title={theme === 'dark' ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}
+          >
+            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
         </div>
 
         <div className="server-status-pill-container">
@@ -36,6 +77,24 @@ function Sidebar({
               Đang kiểm tra kết nối...
             </span>
           )}
+        </div>
+
+        {/* View Toggle Tabs */}
+        <div className="sidebar-nav">
+          <button 
+            className={`nav-item ${currentView === 'overview' ? 'active' : ''}`}
+            onClick={() => setCurrentView('overview')}
+          >
+            <LayoutDashboard size={15} />
+            <span>Tổng quan dữ liệu</span>
+          </button>
+          <button 
+            className={`nav-item ${currentView === 'patient' ? 'active' : ''}`}
+            onClick={() => setCurrentView('patient')}
+          >
+            <User size={15} />
+            <span>Hồ sơ bệnh nhân</span>
+          </button>
         </div>
 
         <div className="search-box">
@@ -65,7 +124,7 @@ function Sidebar({
             <div 
               key={p.hadm_id} 
               className={`patient-item ${selectedPatient && selectedPatient.hadm_id === p.hadm_id ? 'active' : ''}`}
-              onClick={() => setSelectedPatient(p)}
+              onClick={() => handleSelectPatient(p)}
             >
               <div className="patient-item-header">
                 <span className="patient-id">HADM: {p.hadm_id}</span>

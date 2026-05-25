@@ -4,7 +4,43 @@
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Theme colors - Slate Teal Dark Theme */
+  /* Theme colors - Light Theme by default (High contrast for Presentation & projector) */
+  --bg-app: #f8fafc;
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --border-color: #cbd5e1;
+  --border-glow: rgba(37, 99, 235, 0.08);
+
+  /* Primary colors */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  
+  --accent-cyan: #0891b2;
+  --accent-blue: #2563eb;
+  --accent-purple: #9333ea;
+  --accent-violet: #7c3aed;
+  
+  /* Status colors */
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-danger: #ef4444;
+  
+  /* Transparency/glass effects */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(15, 23, 42, 0.06);
+  
+  /* Box Shadow */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-glow-blue: 0 0 15px rgba(37, 99, 235, 0.08);
+  --shadow-glow-purple: 0 0 15px rgba(147, 51, 234, 0.08);
+}
+
+[data-theme="dark"] {
+  /* Theme colors - Dark Theme option */
   --bg-app: #0a0e14;
   --bg-sidebar: #0f1520;
   --bg-card: #151d2a;
@@ -21,11 +57,6 @@
   --accent-blue: #3b82f6;
   --accent-purple: #a855f7;
   --accent-violet: #8b5cf6;
-  
-  /* Status colors */
-  --status-success: #10b981;
-  --status-warning: #f59e0b;
-  --status-danger: #ef4444;
   
   /* Transparency/glass effects */
   --glass-bg: rgba(21, 29, 42, 0.7);
@@ -153,6 +184,46 @@ body {
   color: var(--text-muted);
 }
 
+.sidebar-nav {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  padding: 4px;
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-card-hover);
+}
+
+.nav-item.active {
+  color: var(--accent-cyan);
+  background-color: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
 .patient-list {
   flex: 1;
   min-height: 0;
@@ -176,7 +247,7 @@ body {
 }
 
 .patient-item:hover {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: var(--bg-card-hover);
   border-color: var(--border-color);
 }
 
@@ -379,7 +450,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 12px;
 }
 
@@ -405,7 +476,7 @@ body {
 .demo-table td {
   padding: 10px 0;
   font-size: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .demo-table td.label {
@@ -421,7 +492,7 @@ body {
 
 /* Clinical Metric Card */
 .metric-box {
-  background-color: rgba(255, 255, 255, 0.01);
+  background-color: var(--bg-app);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 12px 16px;
@@ -432,7 +503,7 @@ body {
 }
 
 .metric-box:hover {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: var(--bg-card-hover);
   transform: translateY(-2px);
 }
 
@@ -499,7 +570,7 @@ body {
 
 .gauge-bg {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.05);
+  stroke: var(--border-color);
   stroke-width: 10;
 }
 
@@ -590,7 +661,7 @@ body {
 
 /* What-If Slider controls */
 .whatif-sandbox {
-  background-color: rgba(255, 255, 255, 0.01);
+  background-color: var(--bg-app);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 16px;
@@ -710,8 +781,8 @@ body {
   justify-content: space-between;
   padding: 8px 12px;
   border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
 }
 
 .lab-name {
@@ -791,4 +862,15 @@ body {
 .server-status-pill.offline {
   background-color: rgba(239, 68, 68, 0.1);
   color: var(--status-danger);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
