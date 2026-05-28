@@ -70,11 +70,13 @@ export const getVitalStatus = (name, val) => {
       if (num < 94) return { label: 'HẠ OXY MÁU', alert: true };
       return { label: 'BÌNH THƯỜNG', alert: false };
     case 'hr_mean':
-      if (num < 55 || num > 105) return { label: 'NHỊP TIM NHANH/CHẬM', alert: true };
-      return { label: 'BÌNH THƯỜNG', alert: false };
+      if (num < 55) return { label: 'NHỊP TIM CHẬM', alert: true };
+      else if (num > 105) return { label: 'NHỊP TIM NHANH', alert: true };
+      else return { label: 'BÌNH THƯỜNG', alert: false };
     case 'temperature_mean':
-      if (num < 36.0 || num > 38.0) return { label: 'SỐT/HẠ THÂN NHIỆT', alert: true };
-      return { label: 'BÌNH THƯỜNG', alert: false };
+      if (num < 36.0) return { label: 'HẠ THÂN NHIỆT', alert: true };
+      else if (num > 38.0) return { label: 'SỐT', alert: true };
+      else return { label: 'BÌNH THƯỜNG', alert: false };
     default:
       return { label: 'BÌNH THƯỜNG', alert: false };
   }

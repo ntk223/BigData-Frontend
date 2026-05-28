@@ -13,7 +13,7 @@ function VitalsSummary({ selectedPatient }) {
       <div className="grid-metrics">
         {/* SBP */}
         <div className="metric-box">
-          <span className="metric-label">Huyết áp sụt (Mean SBP)</span>
+          <span className="metric-label">Huyết áp (Mean SBP)</span>
           <div className="metric-value-container">
             <span className="metric-value">{formatValue(selectedPatient.sbp_mean, 0)}</span>
             {formatValue(selectedPatient.sbp_mean, 0) !== '--' && <span className="metric-unit">mmHg</span>}

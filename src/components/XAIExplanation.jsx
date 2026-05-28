@@ -74,9 +74,6 @@ function XAIExplanation({ readmissionXAI, mortalityXAI, isLoadingXAI }) {
             {icon} {title}
           </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span className="header-badge xai-risk-badge">
-              Nguy cơ: {data.risk_percent}%
-            </span>
             {expanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </div>
         </div>
@@ -112,12 +109,6 @@ function XAIExplanation({ readmissionXAI, mortalityXAI, isLoadingXAI }) {
                 </div>
               </div>
             )}
-
-            {/* Disclaimer */}
-            <div className="xai-disclaimer">
-              <Info size={14} />
-              <span>{data.note}</span>
-            </div>
           </div>
         )}
       </div>
