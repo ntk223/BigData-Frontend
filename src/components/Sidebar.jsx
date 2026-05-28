@@ -79,21 +79,27 @@ function Sidebar({
           )}
         </div>
 
-        {/* View Toggle Tabs */}
         <div className="sidebar-nav">
           <button 
             className={`nav-item ${currentView === 'overview' ? 'active' : ''}`}
             onClick={() => setCurrentView('overview')}
           >
             <LayoutDashboard size={15} />
-            <span>Tổng quan dữ liệu</span>
+            <span>Tổng quan</span>
+          </button>
+          <button 
+            className={`nav-item ${currentView === 'list' ? 'active' : ''}`}
+            onClick={() => setCurrentView('list')}
+          >
+            <User size={15} />
+            <span>Danh sách</span>
           </button>
           <button 
             className={`nav-item ${currentView === 'patient' ? 'active' : ''}`}
             onClick={() => setCurrentView('patient')}
           >
-            <User size={15} />
-            <span>Hồ sơ bệnh nhân</span>
+            <Activity size={15} />
+            <span>Hồ sơ</span>
           </button>
         </div>
 

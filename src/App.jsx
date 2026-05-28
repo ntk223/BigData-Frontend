@@ -18,6 +18,8 @@ import SandboxSimulation from './components/SandboxSimulation';
 import TimelineCurves from './components/TimelineCurves';
 import ClinicalTabs from './components/ClinicalTabs';
 import OverviewDashboard from './components/OverviewDashboard';
+import XAIExplanation from './components/XAIExplanation';
+import PatientList from './components/PatientList';
 
 function App() {
   const [patients, setPatients] = useState([]);
@@ -35,6 +37,9 @@ function App() {
   const [mortalityResult, setMortalityResult] = useState(null);
   const [whatIfReadmission, setWhatIfReadmission] = useState(null);
   const [whatIfMortality, setWhatIfMortality] = useState(null);
+  const [readmissionXAI, setReadmissionXAI] = useState(null);
+  const [mortalityXAI, setMortalityXAI] = useState(null);
+  const [isLoadingXAI, setIsLoadingXAI] = useState(false);
 
   const [activeTab, setActiveTab] = useState('vitals');
   const [sandboxOverrides, setSandboxOverrides] = useState({});
@@ -93,18 +98,20 @@ function App() {
   useEffect(() => {
     if (selectedPatient) {
       setSandboxOverrides({
-        age: parseFloat(selectedPatient.age) || 60,
-        sbp_mean: parseFloat(selectedPatient.sbp_mean) || 120,
-        spo2_mean: parseFloat(selectedPatient.spo2_mean) || 98,
-        hr_mean: parseFloat(selectedPatient.hr_mean) || 80,
-        temperature_mean: parseFloat(selectedPatient.temperature_mean) || 37.0,
-        duration_days: parseFloat(selectedPatient.duration_days) || 4.0,
+        age: Math.round(parseFloat(selectedPatient.age)) || 60,
+        sbp_mean: Math.round(parseFloat(selectedPatient.sbp_mean)) || 120,
+        spo2_mean: Math.round(parseFloat(selectedPatient.spo2_mean)) || 98,
+        hr_mean: Math.round(parseFloat(selectedPatient.hr_mean)) || 80,
+        temperature_mean: parseFloat((parseFloat(selectedPatient.temperature_mean) || 37.0).toFixed(1)),
+        duration_days: Math.round(parseFloat(selectedPatient.duration_days)) || 4,
         discharge_location: selectedPatient.discharge_location || 'HOME'
       });
       setReadmissionResult(null);
       setMortalityResult(null);
       setWhatIfReadmission(null);
       setWhatIfMortality(null);
+      setReadmissionXAI(null);
+      setMortalityXAI(null);
       setApiError(null);
     }
   }, [selectedPatient]);
@@ -173,6 +180,30 @@ function App() {
       if (whatifMortRes.status === 'success') {
         setWhatIfMortality(whatifMortRes.data);
       }
+
+      // Fetch XAI explanations in parallel (non-blocking)
+      setIsLoadingXAI(true);
+      Promise.all([
+        fetch(API_BASE_URL + '/explain/readmission', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(res => res.ok ? res.json() : null).catch(() => null),
+        fetch(API_BASE_URL + '/explain/mortality', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(res => res.ok ? res.json() : null).catch(() => null)
+      ]).then(([xaiReadmit, xaiMort]) => {
+        if (xaiReadmit && xaiReadmit.status === 'success') {
+          setReadmissionXAI(xaiReadmit.data);
+        }
+        if (xaiMort && xaiMort.status === 'success') {
+          setMortalityXAI(xaiMort.data);
+        }
+      }).finally(() => {
+        setIsLoadingXAI(false);
+      });
 
     } catch (error) {
       console.error(error);
@@ -266,6 +297,14 @@ function App() {
       <main className="dashboard">
         {currentView === 'overview' ? (
           <OverviewDashboard patients={patients} />
+        ) : currentView === 'list' ? (
+          <PatientList 
+            patients={patients} 
+            onSelectPatient={(p) => {
+              setSelectedPatient(p);
+              setCurrentView('patient');
+            }} 
+          />
         ) : selectedPatient ? (
           <>
             {/* Header patient bar */}
@@ -303,7 +342,16 @@ function App() {
                 mortalityResult={mortalityResult}
               />
 
-              {/* Row 3: Interactive Sandbox & What-If comparison */}
+              {/* Row 3: XAI Explanation */}
+              {(readmissionResult || mortalityResult) && (
+                <XAIExplanation
+                  readmissionXAI={readmissionXAI}
+                  mortalityXAI={mortalityXAI}
+                  isLoadingXAI={isLoadingXAI}
+                />
+              )}
+
+              {/* Row 4: Interactive Sandbox & What-If comparison */}
               {readmissionResult && mortalityResult && (
                 <SandboxSimulation 
                   sandboxOverrides={sandboxOverrides}

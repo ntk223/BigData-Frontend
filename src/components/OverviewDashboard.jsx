@@ -251,9 +251,6 @@ function OverviewDashboard({ patients }) {
         <h2 style={{ color: 'var(--text-primary)', fontSize: '24px', fontWeight: 700 }}>
           Tổng quan Dữ liệu Lâm sàng
         </h2>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
-          Báo cáo thống kê tổng hợp từ tệp dữ liệu thử nghiệm lâm sàng {stats.totalPatients} bệnh nhân.
-        </p>
       </div>
 
       {/* Row 1: KPI Cards */}

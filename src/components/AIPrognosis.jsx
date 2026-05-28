@@ -24,7 +24,7 @@ function AIPrognosis({ isPredicting, readmissionResult, mortalityResult }) {
             <span className="card-title">
               <TrendingUp size={18} /> Nguy cơ tái nhập viện (30 ngày)
             </span>
-            <span className="header-badge">XGBoost Classifier</span>
+            {/* <span className="header-badge">XGBoost Classifier</span> */}
           </div>
 
           <div className="ai-outcome-body">
@@ -72,7 +72,7 @@ function AIPrognosis({ isPredicting, readmissionResult, mortalityResult }) {
             <span className="card-title">
               <ShieldAlert size={18} /> Nguy cơ tử vong (12 tháng)
             </span>
-            <span className="header-badge">XGBSE Model</span>
+            {/* <span className="header-badge">XGBSE Model</span> */}
           </div>
 
           <div className="ai-outcome-body">

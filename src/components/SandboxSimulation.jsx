@@ -86,19 +86,6 @@ function SandboxSimulation({
           </div>
 
           {/* Discharge Location Select */}
-          <div className="select-group">
-            <label style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Hình thức xuất viện</label>
-            <select 
-              value={sandboxOverrides.discharge_location}
-              onChange={e => setSandboxOverrides({...sandboxOverrides, discharge_location: e.target.value})}
-            >
-              <option value="HOME">Về nhà (HOME)</option>
-              <option value="HOME HEALTH CARE">HOME HEALTH CARE (Có điều dưỡng)</option>
-              <option value="SKILLED NURSING FACILITY">Skilled Nursing Facility (SNF)</option>
-              <option value="REHAB">Phục hồi chức năng (REHAB)</option>
-              <option value="HOSPICE">Hospice (HOSPICE)</option>
-            </select>
-          </div>
         </div>
 
         <button 
