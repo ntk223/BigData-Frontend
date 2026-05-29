@@ -33,39 +33,6 @@ function ClinicalTabs({
       </div>
 
       <div className="tab-content">
-        {activeTab === 'vitals' && (
-          <div className="grid-metrics">
-            <div className="metric-box">
-              <span className="metric-label">Huyết áp tối đa (SBP Max)</span>
-              <div className="metric-value-container">
-                <span className="metric-value">{formatValue(selectedPatient.sbp_max, 0)}</span>
-                {formatValue(selectedPatient.sbp_max, 0) !== '--' && <span className="metric-unit">mmHg</span>}
-              </div>
-            </div>
-            <div className="metric-box">
-              <span className="metric-label">Huyết áp tối thiểu (SBP Min)</span>
-              <div className="metric-value-container">
-                <span className="metric-value">{formatValue(selectedPatient.sbp_min, 0)}</span>
-                {formatValue(selectedPatient.sbp_min, 0) !== '--' && <span className="metric-unit">mmHg</span>}
-              </div>
-            </div>
-            <div className="metric-box">
-              <span className="metric-label">Đo huyết áp (Vitals Count)</span>
-              <div className="metric-value-container">
-                <span className="metric-value">{formatValue(selectedPatient.sbp_count, 0)}</span>
-                {formatValue(selectedPatient.sbp_count, 0) !== '--' && <span className="metric-unit">lần</span>}
-              </div>
-            </div>
-            <div className="metric-box">
-              <span className="metric-label">Thời gian nằm viện</span>
-              <div className="metric-value-container">
-                <span className="metric-value">{formatValue(selectedPatient.duration_days, 0)}</span>
-                {formatValue(selectedPatient.duration_days, 0) !== '--' && <span className="metric-unit">ngày</span>}
-              </div>
-            </div>
-          </div>
-        )}
-
         {activeTab === 'labs' && (
           <div className="labs-grid">
             {labsData.length === 0 ? (
