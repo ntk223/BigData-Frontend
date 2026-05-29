@@ -1178,3 +1178,104 @@ body {
   background-color: rgba(16, 185, 129, 0.1);
   color: var(--status-success);
 }
+
+.xai-factor-explanation {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-color);
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.xai-factor-explanation svg {
+  color: var(--accent-blue);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Sandbox Simulation styling */
+.sandbox-add-feature-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.sandbox-add-feature-row select {
+  flex: 1;
+  padding: 8px 12px;
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+}
+
+.btn-add-feature {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background-color: var(--bg-app);
+  border: 1px solid var(--border-color);
+  color: var(--accent-cyan);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.btn-add-feature:hover:not(:disabled) {
+  background-color: var(--accent-cyan);
+  color: #fff;
+  border-color: var(--accent-cyan);
+}
+
+.btn-add-feature:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sandbox-control-wrapper {
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.btn-remove-control {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--status-danger);
+  border: none;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 5;
+}
+
+.sandbox-control-wrapper:hover .btn-remove-control {
+  opacity: 1;
+}
+
+.btn-remove-control:hover {
+  background-color: var(--status-danger);
+  color: #fff;
+}

@@ -12,12 +12,12 @@ function ClinicalTabs({
   return (
     <div className="card tabs-container">
       <div className="tabs-header">
-        <button 
+        {/* <button 
           className={`tab-btn ${activeTab === 'vitals' ? 'active' : ''}`}
           onClick={() => setActiveTab('vitals')}
         >
           Tất cả sinh hiệu
-        </button>
+        </button> */}
         <button 
           className={`tab-btn ${activeTab === 'labs' ? 'active' : ''}`}
           onClick={() => setActiveTab('labs')}

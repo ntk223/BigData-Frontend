@@ -28,11 +28,14 @@ function FactorBar({ card, maxAbsShap, type }) {
         />
       </div>
       <div className="xai-factor-meta">
-        <span className="xai-factor-value">Giá trị: <b>{card.value.toFixed(2)}</b></span>
-        <span className={`xai-shap-val ${isRisk ? 'shap-risk' : 'shap-protect'}`}>
-          SHAP: {card.shap_value > 0 ? '+' : ''}{card.shap_value.toFixed(4)}
-        </span>
+        <span className="xai-factor-value">Giá trị: <b>{card.display_value || (card.value !== undefined ? card.value.toFixed(2) : '')}</b></span>
       </div>
+      {card.explanation && (
+        <div className="xai-factor-explanation">
+          <Info size={13} />
+          <span>{card.explanation}</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -125,7 +125,7 @@ function App() {
     ).slice(0, 100);
   }, [patients, searchQuery]);
 
-  const runPredictions = async (overrides = sandboxOverrides) => {
+  const runPredictions = async (overrides = sandboxOverrides, skipXAI = false) => {
     if (!selectedPatient) return;
     setIsPredicting(true);
     setApiError(null);
@@ -181,29 +181,31 @@ function App() {
         setWhatIfMortality(whatifMortRes.data);
       }
 
-      // Fetch XAI explanations in parallel (non-blocking)
-      setIsLoadingXAI(true);
-      Promise.all([
-        fetch(API_BASE_URL + '/explain/readmission', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).then(res => res.ok ? res.json() : null).catch(() => null),
-        fetch(API_BASE_URL + '/explain/mortality', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).then(res => res.ok ? res.json() : null).catch(() => null)
-      ]).then(([xaiReadmit, xaiMort]) => {
-        if (xaiReadmit && xaiReadmit.status === 'success') {
-          setReadmissionXAI(xaiReadmit.data);
-        }
-        if (xaiMort && xaiMort.status === 'success') {
-          setMortalityXAI(xaiMort.data);
-        }
-      }).finally(() => {
-        setIsLoadingXAI(false);
-      });
+      if (!skipXAI) {
+        // Fetch XAI explanations in parallel (non-blocking)
+        setIsLoadingXAI(true);
+        Promise.all([
+          fetch(API_BASE_URL + '/explain/readmission', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).then(res => res.ok ? res.json() : null).catch(() => null),
+          fetch(API_BASE_URL + '/explain/mortality', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }).then(res => res.ok ? res.json() : null).catch(() => null)
+        ]).then(([xaiReadmit, xaiMort]) => {
+          if (xaiReadmit && xaiReadmit.status === 'success') {
+            setReadmissionXAI(xaiReadmit.data);
+          }
+          if (xaiMort && xaiMort.status === 'success') {
+            setMortalityXAI(xaiMort.data);
+          }
+        }).finally(() => {
+          setIsLoadingXAI(false);
+        });
+      }
 
     } catch (error) {
       console.error(error);
@@ -354,6 +356,9 @@ function App() {
               {/* Row 4: Interactive Sandbox & What-If comparison */}
               {readmissionResult && mortalityResult && (
                 <SandboxSimulation 
+                  selectedPatient={selectedPatient}
+                  readmissionXAI={readmissionXAI}
+                  mortalityXAI={mortalityXAI}
                   sandboxOverrides={sandboxOverrides}
                   setSandboxOverrides={setSandboxOverrides}
                   runPredictions={runPredictions}

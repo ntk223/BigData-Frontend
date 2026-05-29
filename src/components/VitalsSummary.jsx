@@ -7,7 +7,7 @@ function VitalsSummary({ selectedPatient }) {
     <div className="card" style={{ gridColumn: 'span 2' }}>
       <div className="card-header">
         <span className="card-title">
-          <Activity size={18} /> Chỉ số sinh tồn (Vitals)
+          <Activity size={18} /> Sinh hiệu
         </span>
       </div>
       <div className="grid-metrics">

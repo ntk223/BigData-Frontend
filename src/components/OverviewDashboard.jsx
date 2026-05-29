@@ -40,11 +40,14 @@ function OverviewDashboard({ patients }) {
     
     // Age groups
     const ageGroups = {
-      'Dưới 35': { count: 0, readmit: 0, mort: 0 },
-      '35 - 49': { count: 0, readmit: 0, mort: 0 },
-      '50 - 64': { count: 0, readmit: 0, mort: 0 },
-      '65 - 79': { count: 0, readmit: 0, mort: 0 },
-      '80+': { count: 0, readmit: 0, mort: 0 },
+      'Dưới 30': { count: 0, readmit: 0, mort: 0 },
+      '30 - 39': { count: 0, readmit: 0, mort: 0 },
+      '40 - 49': { count: 0, readmit: 0, mort: 0 },
+      '50 - 59': { count: 0, readmit: 0, mort: 0 },
+      '60 - 69': { count: 0, readmit: 0, mort: 0 },
+      '70 - 79': { count: 0, readmit: 0, mort: 0 },
+      '80 - 89': { count: 0, readmit: 0, mort: 0 },
+      '90+': { count: 0, readmit: 0, mort: 0 },
     };
     
     // ICD chapters count
@@ -87,26 +90,38 @@ function OverviewDashboard({ patients }) {
       const age = parseFloat(p.age);
       if (!isNaN(age)) {
         totalAge += age;
-        if (age < 35) {
-          ageGroups['Dưới 35'].count++;
-          if (p.readmission_event_30d === '1') ageGroups['Dưới 35'].readmit++;
-          if (p.mortality_event_12m === '1') ageGroups['Dưới 35'].mort++;
+        if (age < 30) {
+          ageGroups['Dưới 30'].count++;
+          if (p.readmission_event_30d === '1') ageGroups['Dưới 30'].readmit++;
+          if (p.mortality_event_12m === '1') ageGroups['Dưới 30'].mort++;
+        } else if (age < 40) {
+          ageGroups['30 - 39'].count++;
+          if (p.readmission_event_30d === '1') ageGroups['30 - 39'].readmit++;
+          if (p.mortality_event_12m === '1') ageGroups['30 - 39'].mort++;
         } else if (age < 50) {
-          ageGroups['35 - 49'].count++;
-          if (p.readmission_event_30d === '1') ageGroups['35 - 49'].readmit++;
-          if (p.mortality_event_12m === '1') ageGroups['35 - 49'].mort++;
-        } else if (age < 65) {
-          ageGroups['50 - 64'].count++;
-          if (p.readmission_event_30d === '1') ageGroups['50 - 64'].readmit++;
-          if (p.mortality_event_12m === '1') ageGroups['50 - 64'].mort++;
+          ageGroups['40 - 49'].count++;
+          if (p.readmission_event_30d === '1') ageGroups['40 - 49'].readmit++;
+          if (p.mortality_event_12m === '1') ageGroups['40 - 49'].mort++;
+        } else if (age < 60) {
+          ageGroups['50 - 59'].count++;
+          if (p.readmission_event_30d === '1') ageGroups['50 - 59'].readmit++;
+          if (p.mortality_event_12m === '1') ageGroups['50 - 59'].mort++;
+        } else if (age < 70) {
+          ageGroups['60 - 69'].count++;
+          if (p.readmission_event_30d === '1') ageGroups['60 - 69'].readmit++;
+          if (p.mortality_event_12m === '1') ageGroups['60 - 69'].mort++;
         } else if (age < 80) {
-          ageGroups['65 - 79'].count++;
-          if (p.readmission_event_30d === '1') ageGroups['65 - 79'].readmit++;
-          if (p.mortality_event_12m === '1') ageGroups['65 - 79'].mort++;
+          ageGroups['70 - 79'].count++;
+          if (p.readmission_event_30d === '1') ageGroups['70 - 79'].readmit++;
+          if (p.mortality_event_12m === '1') ageGroups['70 - 79'].mort++;
+        } else if (age < 90) {
+          ageGroups['80 - 89'].count++;
+          if (p.readmission_event_30d === '1') ageGroups['80 - 89'].readmit++;
+          if (p.mortality_event_12m === '1') ageGroups['80 - 89'].mort++;
         } else {
-          ageGroups['80+'].count++;
-          if (p.readmission_event_30d === '1') ageGroups['80+'].readmit++;
-          if (p.mortality_event_12m === '1') ageGroups['80+'].mort++;
+          ageGroups['90+'].count++;
+          if (p.readmission_event_30d === '1') ageGroups['90+'].readmit++;
+          if (p.mortality_event_12m === '1') ageGroups['90+'].mort++;
         }
       }
       
@@ -254,7 +269,7 @@ function OverviewDashboard({ patients }) {
       </div>
 
       {/* Row 1: KPI Cards */}
-      <div className="grid-metrics">
+      <div className="grid-metrics" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
         
         {/* KPI 1 */}
         <div className="card card-glow-blue" style={{ padding: '16px' }}>
@@ -270,42 +285,6 @@ function OverviewDashboard({ patients }) {
             </span>
             <span style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '6px' }}>
               ca bệnh án
-            </span>
-          </div>
-        </div>
-
-        {/* KPI 2 */}
-        <div className="card" style={{ padding: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 500 }}>
-              Tỷ lệ tái nhập viện (30 ngày)
-            </span>
-            <TrendingUp size={20} style={{ color: 'var(--accent-blue)' }} />
-          </div>
-          <div>
-            <span style={{ fontSize: '28px', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--status-warning)' }}>
-              {stats.readmission30dRate}%
-            </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '6px' }}>
-              trung bình
-            </span>
-          </div>
-        </div>
-
-        {/* KPI 3 */}
-        <div className="card" style={{ padding: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 500 }}>
-              Tỷ lệ tử vong (12 tháng)
-            </span>
-            <Heart size={20} style={{ color: 'var(--accent-purple)' }} />
-          </div>
-          <div>
-            <span style={{ fontSize: '28px', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--status-danger)' }}>
-              {stats.mortality12mRate}%
-            </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '6px' }}>
-              tỷ lệ chung
             </span>
           </div>
         </div>
@@ -331,7 +310,7 @@ function OverviewDashboard({ patients }) {
       </div>
 
       {/* Row 2: Age groups & Outcomes */}
-      <div className="grid-2col">
+      <div className="grid-2col" style={{ gridTemplateColumns: '1fr' }}>
         
         {/* Card: Age Groups distribution */}
         <div className="card">
@@ -340,7 +319,7 @@ function OverviewDashboard({ patients }) {
               <BarChart3 size={18} /> Phân bố Bệnh nhân theo nhóm tuổi
             </span>
           </div>
-          <div style={{ height: '260px', width: '100%' }}>
+          <div style={{ height: '350px', width: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={stats.ageGroupChartData}
@@ -351,31 +330,6 @@ function OverviewDashboard({ patients }) {
                 <YAxis stroke="#9ca3af" fontSize={12} />
                 <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
                 <Bar dataKey="Bệnh nhân" fill="var(--accent-blue)" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Card: Outcome Risk by Age Group */}
-        <div className="card">
-          <div className="card-header">
-            <span className="card-title">
-              <ShieldAlert size={18} /> Tỷ lệ Nguy cơ Biến cố theo nhóm tuổi
-            </span>
-          </div>
-          <div style={{ height: '260px', width: '100%' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={stats.ageGroupChartData}
-                margin={{ top: 10, right: 10, left: -20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-                <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} />
-                <YAxis unit="%" stroke="#9ca3af" fontSize={12} />
-                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
-                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                <Bar dataKey="Tỷ lệ Tái nhập viện 30d (%)" fill="var(--status-warning)" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Tỷ lệ Tử vong 12m (%)" fill="var(--status-danger)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
