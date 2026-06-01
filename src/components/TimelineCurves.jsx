@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, Heart } from 'lucide-react';
+import { TrendingUp, Heart, Activity } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function TimelineCurves({
@@ -7,9 +7,12 @@ function TimelineCurves({
   mortalityResult,
   combinedWhatIfReadmissionData,
   combinedWhatIfMortalityData,
+  combinedWhatIfReadmissionHazardData,
+  combinedWhatIfMortalityHazardData,
   whatIfReadmission,
   whatIfMortality,
-  readmissionChartData
+  readmissionChartData,
+  readmissionHazardChartData
 }) {
   if (!readmissionResult || !mortalityResult) return null;
 
@@ -80,7 +83,100 @@ function TimelineCurves({
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={combinedWhatIfMortalityData}
+                margin={{ top: 5, right: 10, left: -15, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
+                <XAxis dataKey="day" stroke="#9ca3af" fontSize={11} />
+                <YAxis unit="%" stroke="#9ca3af" fontSize={11} />
+                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
+                <Legend wrapperStyle={{ fontSize: '11px' }} />
+                {Object.keys(whatIfMortality || {}).map((k, idx) => {
+                  const colors = ['#f472b6', '#34d399', '#60a5fa'];
+                  return (
+                    <Line 
+                      key={k}
+                      type="monotone" 
+                      dataKey={whatIfMortality[k].name} 
+                      stroke={colors[idx % colors.length]} 
+                      dot={false}
+                      strokeWidth={2}
+                    />
+                  );
+                })}
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="empty-state">Chưa có dữ liệu sinh tồn</div>
+          )}
+        </div>
+      </div>
+
+      {/* Readmission Hazard Rate Curve */}
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">
+            <Activity size={18} /> Tỷ lệ Hazard Tái nhập viện h(t) (%/ngày)
+          </span>
+        </div>
+
+        <div style={{ height: '240px', width: '100%' }}>
+          {combinedWhatIfReadmissionHazardData && combinedWhatIfReadmissionHazardData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={combinedWhatIfReadmissionHazardData}
                 margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
+                <XAxis dataKey="day" stroke="#9ca3af" fontSize={11} />
+                <YAxis unit="%" stroke="#9ca3af" fontSize={11} />
+                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
+                <Legend wrapperStyle={{ fontSize: '11px' }} />
+                {Object.keys(whatIfReadmission || {}).map((k, idx) => {
+                  const colors = ['#60a5fa', '#34d399', '#f472b6'];
+                  return (
+                    <Line 
+                      key={k}
+                      type="monotone" 
+                      dataKey={whatIfReadmission[k].name} 
+                      stroke={colors[idx % colors.length]} 
+                      dot={false}
+                      strokeWidth={2}
+                    />
+                  );
+                })}
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={readmissionHazardChartData}
+                margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
+                <XAxis dataKey="day" stroke="#9ca3af" fontSize={11} />
+                <YAxis unit="%" stroke="#9ca3af" fontSize={11} />
+                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
+                <Line type="monotone" dataKey="Tỷ lệ Hazard hiện tại" stroke="var(--accent-blue)" strokeWidth={3} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      </div>
+
+      {/* Mortality Hazard Rate Curve */}
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">
+            <Heart size={18} style={{ color: 'var(--status-danger)' }} /> Tỷ lệ Hazard Tử vong h(t) (%/ngày)
+          </span>
+        </div>
+
+        <div style={{ height: '240px', width: '100%' }}>
+          {combinedWhatIfMortalityHazardData && combinedWhatIfMortalityHazardData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={combinedWhatIfMortalityHazardData}
+                margin={{ top: 5, right: 10, left: -5, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis dataKey="day" stroke="#9ca3af" fontSize={11} />

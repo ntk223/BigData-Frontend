@@ -223,6 +223,14 @@ function App() {
     }));
   }, [readmissionResult]);
 
+  const readmissionHazardChartData = useMemo(() => {
+    if (!readmissionResult || !readmissionResult.curve_30day.hazard_rates) return [];
+    return readmissionResult.curve_30day.days.map((day, idx) => ({
+      day,
+      'Tỷ lệ Hazard hiện tại': (readmissionResult.curve_30day.hazard_rates[idx] * 100).toFixed(3)
+    }));
+  }, [readmissionResult]);
+
   const combinedWhatIfReadmissionData = useMemo(() => {
     if (!whatIfReadmission) return [];
     const keys = Object.keys(whatIfReadmission);
@@ -238,6 +246,22 @@ function App() {
     });
   }, [whatIfReadmission]);
 
+  const combinedWhatIfReadmissionHazardData = useMemo(() => {
+    if (!whatIfReadmission) return [];
+    const keys = Object.keys(whatIfReadmission);
+    if (keys.length === 0) return [];
+    
+    const firstKey = keys[0];
+    if (!whatIfReadmission[firstKey].curve_30day.hazard_rates) return [];
+    return whatIfReadmission[firstKey].curve_30day.days.map((day, idx) => {
+      const dataObj = { day };
+      keys.forEach(k => {
+        dataObj[whatIfReadmission[k].name] = (whatIfReadmission[k].curve_30day.hazard_rates[idx] * 100).toFixed(3);
+      });
+      return dataObj;
+    });
+  }, [whatIfReadmission]);
+
   const combinedWhatIfMortalityData = useMemo(() => {
     if (!whatIfMortality) return [];
     const keys = Object.keys(whatIfMortality);
@@ -248,6 +272,22 @@ function App() {
       const dataObj = { day };
       keys.forEach(k => {
         dataObj[whatIfMortality[k].name] = (whatIfMortality[k].survival_curve.probabilities[idx] * 100).toFixed(1);
+      });
+      return dataObj;
+    });
+  }, [whatIfMortality]);
+
+  const combinedWhatIfMortalityHazardData = useMemo(() => {
+    if (!whatIfMortality) return [];
+    const keys = Object.keys(whatIfMortality);
+    if (keys.length === 0) return [];
+    
+    const firstKey = keys[0];
+    if (!whatIfMortality[firstKey].survival_curve.hazard_rates) return [];
+    return whatIfMortality[firstKey].survival_curve.days.map((day, idx) => {
+      const dataObj = { day };
+      keys.forEach(k => {
+        dataObj[whatIfMortality[k].name] = (whatIfMortality[k].survival_curve.hazard_rates[idx] * 100).toFixed(3);
       });
       return dataObj;
     });
@@ -373,9 +413,12 @@ function App() {
                 mortalityResult={mortalityResult}
                 combinedWhatIfReadmissionData={combinedWhatIfReadmissionData}
                 combinedWhatIfMortalityData={combinedWhatIfMortalityData}
+                combinedWhatIfReadmissionHazardData={combinedWhatIfReadmissionHazardData}
+                combinedWhatIfMortalityHazardData={combinedWhatIfMortalityHazardData}
                 whatIfReadmission={whatIfReadmission}
                 whatIfMortality={whatIfMortality}
                 readmissionChartData={readmissionChartData}
+                readmissionHazardChartData={readmissionHazardChartData}
               />
 
               {/* Row 5: Detailed Clinical Labs & ICD10 diagnoses chapters */}
