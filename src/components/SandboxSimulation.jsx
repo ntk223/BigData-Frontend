@@ -397,38 +397,91 @@ function SandboxSimulation({
         </div>
 
         {whatIfReadmission && whatIfMortality ? (
-          <div style={{ height: '240px', width: '100%' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={[
-                  {
-                    name: 'HOME',
-                    'Tái nhập viện (30d)': (whatIfReadmission['HOME'].readmission_probability * 100).toFixed(1),
-                    'Tử vong (12m)': (whatIfMortality['HOME'].mortality_risk_12m * 100).toFixed(1)
-                  },
-                  {
-                    name: 'HOME HEALTH',
-                    'Tái nhập viện (30d)': (whatIfReadmission['HOME HEALTH CARE'].readmission_probability * 100).toFixed(1),
-                    'Tử vong (12m)': (whatIfMortality['HOME HEALTH CARE'].mortality_risk_12m * 100).toFixed(1)
-                  },
-                  {
-                    name: 'VIỆN ĐIỀU DƯỠNG',
-                    'Tái nhập viện (30d)': (whatIfReadmission['SKILLED NURSING FACILITY'].readmission_probability * 100).toFixed(1),
-                    'Tử vong (12m)': (whatIfMortality['SKILLED NURSING FACILITY'].mortality_risk_12m * 100).toFixed(1)
-                  }
-                ]}
-                margin={{ top: 20, right: 10, left: 0, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-                <XAxis dataKey="name" stroke="#9ca3af" fontSize={11} />
-                <YAxis stroke="#9ca3af" unit="%" fontSize={11} />
-                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
-                <Legend wrapperStyle={{ fontSize: '12px' }} />
-                <Bar dataKey="Tái nhập viện (30d)" fill="var(--accent-blue)" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Tử vong (12m)" fill="var(--accent-purple)" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <>
+            <div style={{ height: '240px', width: '100%' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={[
+                    {
+                      name: 'HOME',
+                      'Tái nhập viện (30d)': (whatIfReadmission['HOME'].readmission_probability * 100).toFixed(1),
+                      'Tử vong (12m)': (whatIfMortality['HOME'].mortality_risk_12m * 100).toFixed(1)
+                    },
+                    {
+                      name: 'HOME HEALTH',
+                      'Tái nhập viện (30d)': (whatIfReadmission['HOME HEALTH CARE'].readmission_probability * 100).toFixed(1),
+                      'Tử vong (12m)': (whatIfMortality['HOME HEALTH CARE'].mortality_risk_12m * 100).toFixed(1)
+                    },
+                    {
+                      name: 'VIỆN ĐIỀU DƯỠNG',
+                      'Tái nhập viện (30d)': (whatIfReadmission['SKILLED NURSING FACILITY'].readmission_probability * 100).toFixed(1),
+                      'Tử vong (12m)': (whatIfMortality['SKILLED NURSING FACILITY'].mortality_risk_12m * 100).toFixed(1)
+                    }
+                  ]}
+                  margin={{ top: 20, right: 10, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
+                  <XAxis dataKey="name" stroke="#9ca3af" fontSize={11} />
+                  <YAxis stroke="#9ca3af" unit="%" fontSize={11} />
+                  <Tooltip contentStyle={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }} />
+                  <Legend wrapperStyle={{ fontSize: '12px' }} />
+                  <Bar dataKey="Tái nhập viện (30d)" fill="var(--accent-blue)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Tử vong (12m)" fill="var(--accent-purple)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="sandbox-table-container" style={{ marginTop: '20px', overflowX: 'auto' }}>
+              <table className="demo-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-secondary)' }}>
+                    <th style={{ textAlign: 'left', padding: '8px 4px', fontWeight: '600' }}>Kịch bản xuất viện</th>
+                    <th style={{ textAlign: 'center', padding: '8px 4px', fontWeight: '600' }}>Nguy cơ tái nhập (30d)</th>
+                    <th style={{ textAlign: 'center', padding: '8px 4px', fontWeight: '600' }}>RMST Tái nhập (30d)</th>
+                    <th style={{ textAlign: 'center', padding: '8px 4px', fontWeight: '600' }}>Nguy cơ tử vong (12m)</th>
+                    <th style={{ textAlign: 'center', padding: '8px 4px', fontWeight: '600' }}>RMST Tử vong (12m)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    {
+                      key: 'HOME',
+                      label: 'HOME',
+                      readmitRes: whatIfReadmission['HOME'],
+                      mortRes: whatIfMortality['HOME'],
+                    },
+                    {
+                      key: 'HOME HEALTH CARE',
+                      label: 'HOME HEALTH CARE',
+                      readmitRes: whatIfReadmission['HOME HEALTH CARE'],
+                      mortRes: whatIfMortality['HOME HEALTH CARE'],
+                    },
+                    {
+                      key: 'SKILLED NURSING FACILITY',
+                      label: 'SKILLED NURSING',
+                      readmitRes: whatIfReadmission['SKILLED NURSING FACILITY'],
+                      mortRes: whatIfMortality['SKILLED NURSING FACILITY'],
+                    }
+                  ].map((row) => (
+                    <tr key={row.key} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                      <td style={{ padding: '8px 4px', fontWeight: '500', color: 'var(--text-primary)' }}>{row.label}</td>
+                      <td style={{ textAlign: 'center', padding: '8px 4px', color: 'var(--accent-blue)', fontWeight: '600' }}>
+                        {(row.readmitRes?.readmission_probability * 100).toFixed(1)}%
+                      </td>
+                      <td style={{ textAlign: 'center', padding: '8px 4px', color: 'var(--accent-blue)' }}>
+                        {row.readmitRes?.rmst_30d !== undefined ? `${row.readmitRes.rmst_30d.toFixed(1)} ngày` : '-'}
+                      </td>
+                      <td style={{ textAlign: 'center', padding: '8px 4px', color: 'var(--accent-purple)', fontWeight: '600' }}>
+                        {(row.mortRes?.mortality_risk_12m * 100).toFixed(1)}%
+                      </td>
+                      <td style={{ textAlign: 'center', padding: '8px 4px', color: 'var(--accent-purple)' }}>
+                        {row.mortRes?.rmst_12m !== undefined ? `${row.mortRes.rmst_12m.toFixed(1)} ngày` : '-'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         ) : (
           <div className="empty-state">Đang chờ dữ liệu What-If...</div>
         )}
