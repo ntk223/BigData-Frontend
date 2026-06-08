@@ -27,9 +27,9 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [currentView, setCurrentView] = useState('overview');
-  
+
   const [featuresOrder, setFeaturesOrder] = useState([]);
-  
+
   const [isPredicting, setIsPredicting] = useState(false);
   const [apiError, setApiError] = useState(null);
   const [backendOnline, setBackendOnline] = useState(null);
@@ -41,7 +41,7 @@ function App() {
   const [mortalityXAI, setMortalityXAI] = useState(null);
   const [isLoadingXAI, setIsLoadingXAI] = useState(false);
 
-  const [activeTab, setActiveTab] = useState('vitals');
+  const [activeTab, setActiveTab] = useState('labs');
   const [sandboxOverrides, setSandboxOverrides] = useState({});
 
   const [theme, setTheme] = useState('light');
@@ -119,7 +119,7 @@ function App() {
   const filteredPatients = useMemo(() => {
     if (!searchQuery.trim()) return patients.slice(0, 100);
     const query = searchQuery.toLowerCase().trim();
-    return patients.filter(p => 
+    return patients.filter(p =>
       (p.hadm_id && p.hadm_id.toLowerCase().includes(query)) ||
       (p.subject_id && p.subject_id.toLowerCase().includes(query))
     ).slice(0, 100);
@@ -235,7 +235,7 @@ function App() {
     if (!whatIfReadmission) return [];
     const keys = Object.keys(whatIfReadmission);
     if (keys.length === 0) return [];
-    
+
     const firstKey = keys[0];
     return whatIfReadmission[firstKey].curve_30day.days.map((day, idx) => {
       const dataObj = { day };
@@ -250,7 +250,7 @@ function App() {
     if (!whatIfReadmission) return [];
     const keys = Object.keys(whatIfReadmission);
     if (keys.length === 0) return [];
-    
+
     const firstKey = keys[0];
     if (!whatIfReadmission[firstKey].curve_30day.hazard_rates) return [];
     return whatIfReadmission[firstKey].curve_30day.days.map((day, idx) => {
@@ -266,7 +266,7 @@ function App() {
     if (!whatIfMortality) return [];
     const keys = Object.keys(whatIfMortality);
     if (keys.length === 0) return [];
-    
+
     const firstKey = keys[0];
     return whatIfMortality[firstKey].survival_curve.days.map((day, idx) => {
       const dataObj = { day };
@@ -281,7 +281,7 @@ function App() {
     if (!whatIfMortality) return [];
     const keys = Object.keys(whatIfMortality);
     if (keys.length === 0) return [];
-    
+
     const firstKey = keys[0];
     if (!whatIfMortality[firstKey].survival_curve.hazard_rates) return [];
     return whatIfMortality[firstKey].survival_curve.days.map((day, idx) => {
@@ -295,7 +295,7 @@ function App() {
 
   const activeDiagnoses = useMemo(() => {
     if (!selectedPatient) return [];
-    return Object.keys(ICD10_CHAPTERS).filter(key => 
+    return Object.keys(ICD10_CHAPTERS).filter(key =>
       parseFloat(selectedPatient[key]) === 1.0
     ).map(key => ({
       key,
@@ -321,7 +321,7 @@ function App() {
   return (
     <>
       {/* Sidebar: Patient Search and Select */}
-      <Sidebar 
+      <Sidebar
         loadingCsv={loadingCsv}
         filteredPatients={filteredPatients}
         selectedPatient={selectedPatient}
@@ -340,17 +340,17 @@ function App() {
         {currentView === 'overview' ? (
           <OverviewDashboard patients={patients} />
         ) : currentView === 'list' ? (
-          <PatientList 
-            patients={patients} 
+          <PatientList
+            patients={patients}
             onSelectPatient={(p) => {
               setSelectedPatient(p);
               setCurrentView('patient');
-            }} 
+            }}
           />
         ) : selectedPatient ? (
           <>
             {/* Header patient bar */}
-            <DashboardHeader 
+            <DashboardHeader
               selectedPatient={selectedPatient}
               runPredictions={runPredictions}
               isPredicting={isPredicting}
@@ -378,7 +378,7 @@ function App() {
               </div>
 
               {/* Row 2: AI Prognosis Prognosis Result Indicators */}
-              <AIPrognosis 
+              <AIPrognosis
                 isPredicting={isPredicting}
                 readmissionResult={readmissionResult}
                 mortalityResult={mortalityResult}
@@ -395,7 +395,7 @@ function App() {
 
               {/* Row 4: Interactive Sandbox & What-If comparison */}
               {readmissionResult && mortalityResult && (
-                <SandboxSimulation 
+                <SandboxSimulation
                   selectedPatient={selectedPatient}
                   readmissionXAI={readmissionXAI}
                   mortalityXAI={mortalityXAI}
@@ -408,7 +408,7 @@ function App() {
               )}
 
               {/* Row 4: Timeline Curves Charts */}
-              <TimelineCurves 
+              <TimelineCurves
                 readmissionResult={readmissionResult}
                 mortalityResult={mortalityResult}
                 combinedWhatIfReadmissionData={combinedWhatIfReadmissionData}
@@ -422,7 +422,7 @@ function App() {
               />
 
               {/* Row 5: Detailed Clinical Labs & ICD10 diagnoses chapters */}
-              <ClinicalTabs 
+              <ClinicalTabs
                 selectedPatient={selectedPatient}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
